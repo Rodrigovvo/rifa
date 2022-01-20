@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.text import slugify
 
 from django.contrib.auth import get_user_model
 User = get_user_model()
@@ -27,6 +28,11 @@ class Raffle(models.Model):
                 Sorteia um número ganhador da rifa
         '''
         pass
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.title)
+        super(Raffle, self).save(*args, **kwargs)
+
 
 
 class Campaign(models.Model):

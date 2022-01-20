@@ -49,7 +49,7 @@ class RaffleViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
     @action(detail=True, methods=['get'], name='get-tickets')
-    def get_tickets(self, request, pk=None):
+    def tickets(self, request, pk=None):
         raffle = self.get_object()
         tickets = raffle.get_tickets()
         serializer_context = {

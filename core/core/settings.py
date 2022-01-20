@@ -31,6 +31,7 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'drf_spectacular',
+    'drf_spectacular_sidecar',
 
 ]
 
@@ -72,6 +73,16 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10,    
 
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Raffle Project',
+    'DESCRIPTION': 'Projeto para organizar Rifas',
+    'VERSION': '1.0.0',
+    # OTHER SETTINGS
+    'SWAGGER_UI_DIST': 'SIDECAR',  # shorthand to use the sidecar instead
+    'SWAGGER_UI_FAVICON_HREF': 'SIDECAR',
+    'REDOC_DIST': 'SIDECAR',
 }
 
 WSGI_APPLICATION = 'core.wsgi.application'
