@@ -23,7 +23,7 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
 class RaffleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Raffle
-        fields = ['url', 'name', 'max_number',
+        fields = ['url', 'name', 'slug', 'max_number',
                   'raffle_image', 'end_date', 'description']
 
 
@@ -38,8 +38,14 @@ class TicketSerializer(serializers.ModelSerializer):
         model = Ticket
         fields = ['url', 'number', 'raffle', 'is_active', 'user']
 
+    def validate(self, data):
+        if data['number'] > data['raffle'].max_number:
+            raise serializers.ValidationError(
+                "Número requisitado é maior que o número de tickets máximo nesta Rifa.")
+        return data
+
 
 class PrizeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Prize
-        fields = ['url', 'prize_name', 'prize_image', 'description']
+        fields = ['url', 'prize_name', 'prize_image', 'description', 'raffle']

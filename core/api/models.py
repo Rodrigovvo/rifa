@@ -13,6 +13,8 @@ class Raffle(models.Model):
     description = models.TextField(blank=True, null=True)
     start_date = models.DateTimeField(auto_now_add=True)
     end_date = models.DateTimeField(blank=True, null=True)
+    is_finished = models.BooleanField(default=False)
+    winner = models.BigIntegerField(blank=True, null=True)
 
     def __str__(self):
         return self.name
@@ -27,12 +29,18 @@ class Raffle(models.Model):
         '''
                 Sorteia um número ganhador da rifa
         '''
-        pass
+        if self.winner:
+            return winner
+        else:
+            prize_drawn = Ticket.objects.filter(raffle=self, is_active=True).order_by('?').first().number
+            self.winner = prize_drawn
+            self.save()
+
+            return prize_drawn
 
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.title)
+        self.slug = slugify(self.name)
         super(Raffle, self).save(*args, **kwargs)
-
 
 
 class Campaign(models.Model):
@@ -53,8 +61,12 @@ class Ticket(models.Model):
         User, on_delete=models.CASCADE, related_name='participante')
     is_active = models.BooleanField(default=False)
 
+    class Meta:
+        unique_together = ['raffle', 'number']
+
     def __str__(self):
         return f'Ticket: {number} da {self.raffle}'
+
 
 
 class Prize(models.Model):

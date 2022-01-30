@@ -23,3 +23,5 @@ Pipfile.lock
 registers_finished.list
 migration_dayoff.log
 /venv
+.db.sqlite3
+*.sqlite3

@@ -69,7 +69,7 @@ class RaffleViewSet(viewsets.ModelViewSet):
 
 class CampaignViewSet(viewsets.ModelViewSet):
     """
-    API endpoint that allows raffles to be viewed or edited.
+    API endpoint that allows campaing to be viewed or edited.
     """
     queryset = Campaign.objects.all()
     serializer_class = CampaignSerializer
