@@ -1,10 +1,14 @@
+from django.contrib.auth import get_user_model
+from django.contrib.auth.models import Group
+from rest_framework import serializers
+
 from .models import Campaign
 from .models import Prize
 from .models import Raffle
 from .models import Ticket
-from django.contrib.auth import get_user_model
-from django.contrib.auth.models import Group
-from rest_framework import serializers
+from core.exceptions import ExceedMaxNumberTicketsInRaffle
+
+
 User = get_user_model()
 
 
@@ -23,8 +27,11 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
 class RaffleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Raffle
-        fields = ['url', 'name', 'slug', 'max_number',
-                  'raffle_image', 'end_date', 'description']
+        fields = [
+            'url', 'name', 'slug', 'max_number',
+            'raffle_image', 'end_date', 'description',
+            'ticket_price'
+        ]
 
 
 class CampaignSerializer(serializers.ModelSerializer):
@@ -40,8 +47,7 @@ class TicketSerializer(serializers.ModelSerializer):
 
     def validate(self, data):
         if data['number'] > data['raffle'].max_number:
-            raise serializers.ValidationError(
-                "Número requisitado é maior que o número de tickets máximo nesta Rifa.")
+            raise ExceedMaxNumberTicketsInRaffle
         return data
 
 

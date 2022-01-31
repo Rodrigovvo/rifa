@@ -1,3 +1,13 @@
+from django.contrib.auth import get_user_model
+from django.contrib.auth.models import Group
+
+from rest_framework import generics
+from rest_framework import mixins
+from rest_framework import permissions
+from rest_framework import viewsets
+from rest_framework.decorators import action
+from rest_framework.response import Response
+
 from .models import Campaign
 from .models import Prize
 from .models import Raffle
@@ -9,15 +19,6 @@ from .serializers import RaffleSerializer
 from .serializers import TicketSerializer
 from .serializers import UserSerializer
 
-from django.contrib.auth import get_user_model
-from django.contrib.auth.models import Group
-
-from rest_framework import generics
-from rest_framework import mixins
-from rest_framework import permissions
-from rest_framework import viewsets
-from rest_framework.decorators import action
-from rest_framework.response import Response
 
 User = get_user_model()
 
@@ -48,7 +49,8 @@ class RaffleViewSet(viewsets.ModelViewSet):
     serializer_class = RaffleSerializer
     permission_classes = [permissions.IsAuthenticated]
 
-    @action(detail=True, methods=['get'], name='get-tickets')
+    @action(detail=True, methods=['get'], name='get-tickets',
+        url_path='tickets', url_name='tickets')
     def tickets(self, request, pk=None):
         raffle = self.get_object()
         tickets = raffle.get_tickets()
