@@ -28,9 +28,8 @@ class RaffleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Raffle
         fields = [
-            'url', 'name', 'slug', 'max_number',
-            'raffle_image', 'end_date', 'description',
-            'ticket_price'
+            'url', 'name', 'max_number', 'raffle_image', 
+            'end_date', 'description', 'ticket_price'
         ]
 
 
@@ -54,4 +53,7 @@ class TicketSerializer(serializers.ModelSerializer):
 class PrizeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Prize
-        fields = ['url', 'prize_name', 'prize_image', 'description', 'raffle']
+        fields = [
+            'url', 'prize_name', 'prize_image', 
+            'description', 'raffle'
+        ]

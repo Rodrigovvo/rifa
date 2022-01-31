@@ -16,7 +16,7 @@ celerybeat-schedule.db
 requirements.md5
 requirements.dev
 src
-Pipfile
+# Pipfile
 Pipfile.lock
 **/*.DS_Store
 **/*pylintrc

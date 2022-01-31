@@ -37,6 +37,7 @@ class Raffle(models.Model):
             prize_drawn = Ticket.objects.filter(
                 raffle=self, is_active=True
             ).order_by('?').first().number
+            
             self.winner = prize_drawn
             self.is_finished = True
             self.save()
