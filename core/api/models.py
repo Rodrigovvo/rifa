@@ -89,7 +89,6 @@ class Ticket(models.Model):
         return f'Ticket: {number} da {self.raffle}'
 
 
-
 class Prize(models.Model):
     prize_name = models.CharField(max_length=256, verbose_name='Nome do Prêmio')
     description = models.TextField(verbose_name='Descrição do prêmio', blank=True, null=True)

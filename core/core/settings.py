@@ -1,4 +1,10 @@
+import os
+
 from pathlib import Path
+from decouple import Csv, config
+from dj_database_url import parse as db_url
+
+# from .secret_settings import *
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -7,14 +13,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-3guq5nd(6jb+&o0sa37%my2$cn#u-yl1gcqi3hr!bnde@a1m%9'
+SECRET_KEY = config('SECRET_KEY')
+DEBUG = config('DEBUG', default=False, cast=bool)
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
-
+MAILJET_API_KEY = config('MAILJET_API_KEY', default=None)
+MAILJET_API_SECRET = config('MAILJET_API_SECRET', default=None)
 
 # Application definition
 
@@ -28,7 +31,7 @@ INSTALLED_APPS = [
 
     'accounts',
     'api',
-
+    
     'rest_framework',
     'drf_spectacular',
     'drf_spectacular_sidecar',
@@ -79,8 +82,8 @@ SPECTACULAR_SETTINGS = {
     'TITLE': 'Raffle Project',
     'DESCRIPTION': 'Projeto para organizar Rifas',
     'VERSION': '1.0.0',
-    # OTHER SETTINGS
-    'SWAGGER_UI_DIST': 'SIDECAR',  # shorthand to use the sidecar instead
+    
+    'SWAGGER_UI_DIST': 'SIDECAR',
     'SWAGGER_UI_FAVICON_HREF': 'SIDECAR',
     'REDOC_DIST': 'SIDECAR',
 }
@@ -91,12 +94,9 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+DATABASES = {'default': config('DATABASE_URL', cast=db_url)}
+DATABASES['default']['ATOMIC_REQUESTS'] = True
+
 
 
 # Password validation
@@ -144,3 +144,18 @@ MEDIA_ROOT = 'media/'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+CELERY_BROKER_URL = os.environ.get("CELERY_BROKER", "redis://redis:6379/0")
+CELERY_RESULT_BACKEND = os.environ.get("CELERY_BACKEND", "redis://redis:6379/0")
+CELERY_TIMEZONE = 'America/Sao_Paulo'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = config('EMAIL_HOST', default='localhost')
+EMAIL_HOST_NAME = config('EMAIL_HOST_NAME', default='RifasBR')
+EMAIL_HOST_USER = config('EMAIL_HOST_USER', default='contato@rifasbr.com.br')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='password')
+EMAIL_PORT = config('EMAIL_PORT', default=25, cast=int)
+EMAIL_USE_TLS = True
+
+MAILJET_KEY_API = config('MAILJET_KEY_API', default='key')
+MAILJET_SECRET_API = config('MAILJET_SECRET_API', default='secret_key')
