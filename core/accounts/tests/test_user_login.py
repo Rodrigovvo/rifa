@@ -7,7 +7,6 @@ from rest_framework import status
 from rest_framework.reverse import reverse
 from rest_framework.test import APITestCase
 
-
 User = get_user_model()
 client = Client()
 
@@ -17,21 +16,46 @@ class TestUserLogin(APITestCase):
     def setUp(self):
         self.credentials = {
             'username': 'testuser',
-            'password': 'secret'}
-        User.objects.create_user(**self.credentials)
+            'password': 'secret',
+            }
+        user = User.objects.create_user(**self.credentials)
+
+
     def test_login(self):
-        # send login data
-        response = self.client.post('/login/', self.credentials, follow=True)
-        # should be logged in now
-        self.assertTrue(response.context['user'].is_active)
+        logged = self.client.login(**self.credentials)
+        self.assertTrue(logged)
+
+
+    def test_login_HTTP_response(self):
+        response = self.client.post('/api-auth/login/',**self.credentials)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     
     def test_if_password_incorrect_then_cant_login(self):
-        # unit test
-        # Corroborate that user's password needs to be only the correct one
-        pass
+        self.credentials['password'] = 'wrong_password'
+        logged = self.client.login(**self.credentials)
+        self.assertFalse(logged)
+
+
+    def test_if_password_incorrect_then_cant_login_HTTP_response(self):
+        self.credentials['password'] = 'wrong_password'
+        response = self.client.post('/api-auth/login/',**self.credentials)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
     
     def test_if_user_not_registered_cant_login(self):
-        # unit test
-        # Corroborate that user's are able to login only if they're registered
-        pass
+        unregistered_user = {
+            'username': 'unregistered_user',
+            'password': 'secr3t',
+        }
+        logged = self.client.login(**unregistered_user)
+        self.assertFalse(logged)
+
+
+    def test_if_user_not_registered_cant_login_HTTP_response(self):
+        unregistered_user = {
+            'username': 'unregistered_user',
+            'password': 'secr3t',
+        }
+        response = self.client.post('/api-auth/login/', **unregistered_user)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
