@@ -15,9 +15,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = config('SECRET_KEY')
 DEBUG = config('DEBUG', default=False, cast=bool)
-
-MAILJET_API_KEY = config('MAILJET_API_KEY', default=None)
-MAILJET_API_SECRET = config('MAILJET_API_SECRET', default=None)
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
 
 # Application definition
 
@@ -28,14 +26,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    
+    'drf_spectacular',
+    'drf_spectacular_sidecar',
+    'rest_framework',
 
     'accounts',
     'api',
     
-    'rest_framework',
-    'drf_spectacular',
-    'drf_spectacular_sidecar',
-
 ]
 
 MIDDLEWARE = [
