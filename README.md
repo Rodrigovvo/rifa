@@ -19,7 +19,7 @@ cp .env.example .env
 
 #### Executando a aplicação pela primeira vez
 
-É necessário criar o banco de dados antes das aplicações (*backend* e *frontend*).
+É necessário criar o banco de dados antes das aplicações (*web* e *frontend*).
 
 Em um terminal suba o baco de dados:
 
@@ -30,11 +30,10 @@ docker-compose up bd
 Em um outro terminal rode a migração do Django e popule com os dados básicos:
 
 ```bash
-sudo docker-compose run --rm backend python manage.py migrate
-sudo docker-compose run --rm backend python manage.py populate_db
+sudo docker-compose run --rm web python manage.py migrate
 ```
 
-Depois de rodar a migração e o populate pode derrubar o database:
+Depois de rodar a migração pode derrubar o database:
 
 ```bash
 sudo docker-compose down
@@ -50,7 +49,7 @@ Os endereços e portas das aplicações são:
 
 Backend - Django:
 ```bash
-http://localhost:8000
+http://localhost:8080
 ```
 
 #### Executando a aplicação
@@ -62,10 +61,10 @@ sudo docker-compose up
 ```
 
 No desenvolvimento do backend (Django), não é necessário subir o frontend.
-Para subir somente a aplicação backend, execute:
+Para subir somente a aplicação web, execute:
 
 ```bash
-sudo docker-compose up backend
+sudo docker-compose up web
 ```
 
 # Observações
@@ -74,22 +73,22 @@ sudo docker-compose up backend
 
 Para executar qualquer comando do Django (startapp, createsuperuser, makemigrations, populate_db, etc) deve considerar se a aplicação está *no ar* ou não.
 
-Se o service **backend** estiver *no ar* e *rodando* corretamente, basta utilizar o próprio service para executar o comando desejado.
+Se o service **web** estiver *no ar* e *rodando* corretamente, basta utilizar o próprio service para executar o comando desejado.
 Exemplos:
 
 ```bash
-sudo docker-compose exec backend python manage.py startapp {novo_app}
-sudo docker-compose exec backend python manage.py makemigrations
-sudo docker-compose exec backend python manage.py migrate
+sudo docker-compose exec web python manage.py startapp {novo_app}
+sudo docker-compose exec web python manage.py makemigrations
+sudo docker-compose exec web python manage.py migrate
 ```
 
-Se o service **backend** não estiver *no ar* ou com *erro de execução*, deve-se executar o comando desejado em um novo service.
+Se o service **web** não estiver *no ar* ou com *erro de execução*, deve-se executar o comando desejado em um novo service.
 Exemplos:
 
 ```bash
-sudo docker-compose run --rm backend python manage.py startapp {novo_app}
-sudo docker-compose run --rm backend python manage.py makemigrations
-sudo docker-compose run --rm backend python manage.py migrate
+sudo docker-compose run --rm web python manage.py startapp {novo_app}
+sudo docker-compose run --rm web python manage.py makemigrations
+sudo docker-compose run --rm web python manage.py migrate
 ```
 
 #### Permissões ao arquivos criados utilizando o docker-compose
