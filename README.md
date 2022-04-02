@@ -10,7 +10,6 @@
 ```bash
 git clone https://github.com/Rodrigovvo/rifa
 ```
-
 #### Configure o arquivo .env
 
 ```bash
