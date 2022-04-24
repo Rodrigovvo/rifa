@@ -1,6 +1,8 @@
 from django.contrib.auth import get_user_model
 from django.db import models
+from django.db.models.query import QuerySet
 from django.utils.text import slugify
+
 
 
 User = get_user_model()
@@ -21,15 +23,19 @@ class Raffle(models.Model):
     def __str__(self):
         return self.name
 
-    def get_tickets(self) -> list:
+    def get_tickets(self) -> QuerySet:
         """
-        Retorna os tickets referentes à Rifa
+        Retorna os tickets ativos referentes a uma instância de Rifa
+
+        :returns: (QuerySet) Retorna um QuerySet com os tickets ativos.
         """
-        return Ticket.objects.filter(raffle=self)
+        return Ticket.objects.filter(raffle=self, is_active=True)
 
     def draw_prizes(self) -> int:
         """
         Sorteia um número ganhador da rifa
+
+        :returns: (int) Retorna o número do Ticket vencedor
         """
         if self.winner:
             return self.winner

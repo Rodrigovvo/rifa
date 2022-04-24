@@ -52,6 +52,12 @@ class RaffleViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['get'], name='get-tickets',
         url_path='tickets', url_name='tickets')
     def tickets(self, request, pk=None):
+        """ 
+        Action que retorna serializer paginada contendos os tickets ativos vinculados à rifa
+        
+        :returns: (Response)
+        """
+
         raffle = self.get_object()
         tickets = raffle.get_tickets()
         serializer_context = {
