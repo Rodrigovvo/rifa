@@ -50,30 +50,3 @@ class TestUserLogin(APITestCase):
         response = self.client.put(f'/api/v1/users/{self.test_user.pk}/', self.credentials)
         self.assertFalse(self.test_user.email, 'email@email.com')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-
-
-    # def test_create_user_by_unlogged_user(self):
-    #     data = {
-    #         'username': 'testuser2',
-    #         'password': 'test',
-
-    #     }
-    #     response = self.client.post('/api/v1/users/', data, format='json')
-    #     self.assertEqual(User.objects.count(), 1)
-    #     self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
-
-    # def test_delete_user(self):
-    #     logged = self.client.login(**self.credentials)
-    #     data = {
-    #         'username': 'testuser2',
-    #         'password': 'test',
-
-    #     }
-
-    #     response = self.client.post('/api/v1/users/', data, format='json')
-    #     self.assertEqual(User.objects.count(), 2)
-    #     self.assertEqual(response.data['username'], data['username'])
-    #     user_for_delete = User.objects.get(username=data['username'])
-    #     response = self.client.delete(f'/api/v1/users/{user_for_delete.pk}/')
-    #     self.assertEqual(User.objects.count(), 1)
-    #     self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
